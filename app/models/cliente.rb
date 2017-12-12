@@ -1,4 +1,5 @@
 class Cliente < ApplicationRecord
+require 'csv'
 	validates :nombre, :telefono, :email, :direccion, :direccion_entrega,   presence: true
 	def self.to_csv(options = {})
 			CSV.generate(options) do |csv|
