@@ -1,18 +1,67 @@
 <% provide(:title, "Home")%>
+<% contado = Ventum.where(tipo: "contado") %>
+<% credito = Ventum.where(tipo: "credito") %>
+<% contado = Ventum.where(tipo: "contado") %>
+<% contado = Ventum.where(tipo: "contado") %>
+
 <h1 class="text-center">Bienvenido a Paycesa</h1>
 <% if logged_in? %>
 	<div class="row"> 
-		<div class="col-sm-3">
-			<h1>Ventas de contado</h1>
+		<div class="div-dash">
+			<%= image_tag("01.png", class: "img-dash") %>
+			<h4 class="text-center contado-title">Ventas de contado</h4>
 		</div>
-		<div class="col-sm-3">
-			<h1>Productos sin inventario</h1>
+		<div class="div-dash">
+			<%= image_tag("02.png", class: "img-dash") %>
+			<h4 class="text-center inventario-title">Productos sin inventario</h4>
 		</div>
-		<div class="col-sm-3">
-			<h1>Ventas a credito</h1>
+		<div class="div-dash">
+			<%= image_tag("03.png", class: "img-dash") %>
+			<h4 class="text-center credito-title">Ventas a credito</h4>
 		</div>
-		<div class="col-sm-3">
-			<h1>Embarques en proceso</h1>
+		<div class="div-dash">
+			<%= image_tag("04.png", class: "img-dash") %>
+			<h4 class="text-center proceso-title">Embarques en proceso</h4>
 		</div>
 	</div>
 <% end %>
+
+<style type="text/css">
+	.div-dash{
+		width: 300px;
+		height: 600px;
+		background-color: #f2f2f2;
+		margin: 25px; 
+		padding: 10px;
+	}
+	.img-dash{
+		width: 100px;
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+	}
+	.contado-title {
+		margin: 5px;
+		padding: 5px;
+		background-color: #ffa31a;
+		color: white;
+	}
+	.inventario-title {
+		margin: 5px;
+		padding: 5px;
+		background-color: red;
+		color: white;
+	}
+	.credito-title {
+		margin: 5px;
+		padding: 5px;
+		background-color:  blue;
+		color: white;
+	}
+	.proceso-title {
+		margin: 55px 5px 5px 5px;
+		padding: 5px;
+		background-color:  green;
+		color: white;
+	}
+</style>
