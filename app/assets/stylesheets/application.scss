@@ -1,0 +1,54 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+
+ */
+@import "bootstrap";
+
+body{
+	background-color: #e1eaea;
+}
+ul.nav{
+	background-color:  #e6f7ff;
+	height:100vh;
+}
+.form{
+	border-radius: 10px;
+	margin: 60px;
+	background-color: white;
+}
+
+.centrar-div{
+    width: 100%;
+
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 10px 0;
+    align-items: center;
+    justify-content: space-around;
+    display: flex;
+    float: none;
+}
+
+
+/* mixins, variables, etc. */
+/*
+$gray-medium-light: #eaeaea;
+
+@mixin box_sizing {
+  -moz-box-sizing:    border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing:         border-box;
+}
+
+/*Universal*/
+

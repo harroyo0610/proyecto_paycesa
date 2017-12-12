@@ -1,0 +1,26 @@
+
+<h1 class="text-center">Edita el cliente</h1>
+<br><br>
+<% clientes = [] %>
+<% if !@clientes.nil? %>
+	<% @clientes.each { |item| clientes << [item.nombre, item.nombre]} %>
+<% end %>
+<div class="offset-sm-1 col-sm-10 form">
+<%= form_for(@embarque) do |f|%>
+	<%= f.label "# de Guía" %><br>	
+	<%= f.text_field "numero_guia", type: "text", class: "form-control" %>
+	<%= f.label "Transportista" %><br>
+	<%= f.text_field "transportista", type: "text", class: "form-control" %>	
+  <%= f.label "Fecha de Salida" %><br>	
+  <%= f.date_field "fecha_salida", class: "form-control" %>
+  <%= f.label "Ordén" %><br>	
+  <%= f.text_field "numero_orden", type: "text", class: "form-control" %>
+  <%= f.label "Destino" %><br>
+  <%= f.text_field "destino", type: "text", class: "form-control" %>
+  <%= f.label "Cliente" %><br>
+  <%= f.select("cliente", clientes, {} ,{class: "form-control"}) %><br>
+  <%= f.label "Status" %><br>	
+	<%= f.select("status", [['En proceso', 'proceso'], ['Cancelado', 'cancelado'], ['Embarcado', 'embarcado'], ['Entregado', 'entregado']], {} ,{class: "form-control"}) %><br>
+  <%= f.submit "Crear", class: "btn btn-primary" %>
+<% end %>
+</div>

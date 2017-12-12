@@ -1,0 +1,61 @@
+
+<h1 class="text-center">Clientes</h1>
+<br><br>
+<div class="row">
+	<%=  link_to "Agregar cliente", new_cliente_path, class: "btn btn-outline-primary offset-sm-6 col-sm-2 "%>
+	<%= link_to "Excel", cliente_index_path(format: "xls"), class: "btn btn-outline-primary offset-sm-1 col-sm-1" %>
+	</div>
+<div class="row col-sm-12">
+
+	
+	<table class="table table-striped " style="background-color: #b3e6ff" id="myTable">
+		<input type="text" class="form-control col-sm-4" id="myInput" onkeyup="myFunction()" placeholder="Buscar.." title="Type in a name">
+
+		<thead>
+			<tr>
+				<th scope="col">ID#</th>
+	      <th scope="col">Nombre</th>
+	      <th scope="col">Teléfono</th>
+	      <th scope="col">Email/th>
+	      <th scope="col">Update</th>
+	      <th scope="col">Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% if @clientes.empty? %>
+				<h3 class="text-center">No hay clientes</h3>
+			<% else %>
+				<% @clientes.each do|item|%>
+					<tr>
+						<td scope="col"><%= item.id %></td>
+						<td scope="col"><%= item.nombre %></td>
+						<td scope="col"><%= item.telefono %></td>
+						<td scope="col"><%= item.email %></td>
+						<td scope="col"> <%= link_to "Update", edit_cliente_path(item), class: "btn btn-primary" %> </td>
+						<td scope="col"> <%= link_to "Delete", cliente_path(item), method: "delete", data: { confirm: "Are you sure?" } , class: "btn btn-primary" %></td>
+					</tr>
+				<% end %>
+			<% end %>
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+	function myFunction() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>

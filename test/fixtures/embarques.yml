@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  numero_guia: MyString
+  transportista: MyString
+  fecha_salida: 2017-12-12 00:08:57
+  numero_orden: MyString
+  destino: MyString
+  cliente: MyString
+  status: MyString
+
+two:
+  numero_guia: MyString
+  transportista: MyString
+  fecha_salida: 2017-12-12 00:08:57
+  numero_orden: MyString
+  destino: MyString
+  cliente: MyString
+  status: MyString

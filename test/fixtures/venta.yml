@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tc: MyString
+  cliente: MyString
+  bodega: MyString
+  pago: MyString
+  cantidad: 1
+  descuento: 1.5
+
+two:
+  tc: MyString
+  cliente: MyString
+  bodega: MyString
+  pago: MyString
+  cantidad: 1
+  descuento: 1.5

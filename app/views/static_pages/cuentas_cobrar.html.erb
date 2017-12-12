@@ -1,0 +1,63 @@
+
+<h1 class="text-center">Cuentas por cobrar</h1>
+<br><br>
+<% cuentas = Ventum.where(pago: "credito")%>
+<div class="row col-sm-12">
+
+	
+	<table class="table table-striped " style="background-color: #b3e6ff" id="myTable">
+		<input type="text" class="form-control col-sm-4" id="myInput" onkeyup="myFunction()" placeholder="Buscar.." title="Type in a name">
+
+		<thead>
+			<tr>
+				<th scope="col">ID#</th>
+	      <th scope="col">Tc</th>
+	      <th scope="col">Fecha</th>
+	      <th scope="col">Cliente</th>
+	      <th scope="col">Bodega</th>
+	      <th scope="col">Pago</th>
+	      <th scope="col">Cantidad</th>
+	      <th scope="col">Descuento</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% if cuentas.empty? %>
+			<br>
+				<h3 class="text-center">No hay cuentas por cobrar</h3>
+			<% else %>
+				<% cuentas.each do|item|%>
+					<tr>
+						<td scope="col"><%= item.tc %></td>
+						<td scope="col"><%= item.created_at %></td>
+						<td scope="col"><%= item.cliente %></td>
+						<td scope="col"><%= item.bodega %></td>
+						<td scope="col"><%= item.pago %></td>
+						<td scope="col"><%= item.cantidad %></td>
+						<td scope="col"><%= item.descuento %></td>
+
+					</tr>
+				<% end %>
+			<% end %>
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+	function myFunction() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>

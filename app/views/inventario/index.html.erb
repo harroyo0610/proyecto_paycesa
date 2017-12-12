@@ -1,0 +1,60 @@
+
+<br><br>
+
+<h1 class="text-center">Movimientos Inventario</h1>
+<br><br>
+<div class="row col-sm-12">
+	
+	<table class="table table-striped " style="background-color: #b3e6ff" id="myTable">
+		<input type="text" class="form-control col-sm-4" id="myInput" onkeyup="myFunction()" placeholder="Buscar.." title="Type in a name">
+
+		<thead>
+			<tr>
+				<th scope="col">UPC</th>
+	      <th scope="col">Modelo</th>
+	      <th scope="col">Descripción</th>
+	      <th scope="col">Compra</th>
+	      <th scope="col">Venta</th>
+	      <th scope="col">Cantidad</th>
+	      <th scope="col">Bodega</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% if @inventarios.empty? %>
+				<h3 class="text-center">No hay inventario</h3>
+			<% else %>
+				<% @inventarios.each do|item|%>
+					<tr>
+						<td scope="col"><%= item.upc %></td>
+						<td scope="col"><%= item.modelo %></td>
+						<td scope="col"><%= item.descripcion %></td>
+						<td scope="col"><%= item.compra %></td>
+						<td scope="col"><%= item.venta %></td>
+						<td scope="col"><%= item.cantidad %></td>
+						<td scope="col"><%= item.bodega %></td>
+					</tr>
+				<% end %>
+			<% end %>
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+	function myFunction() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>

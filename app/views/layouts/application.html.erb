@@ -1,14 +1,59 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Pay</title>
-    <%= csrf_meta_tags %>
+<head>
+  <title>Paycesa</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+	<%= render 'layouts/header' %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
 
-  <body>
-    <%= yield %>
-  </body>
+
+		<% if logged_in? %>
+			<div class="row">
+			<%= render 'layouts/side_menu' %>
+			
+				
+				<div class="col-sm-10">
+					<% flash.each do |message_type, message| %>
+					<div class="alert alert-<%= message_type %> " id="flash">
+						<%= message %>
+					</div>
+				<% end %>
+					<%= yield %>
+				</div>
+			</div>
+		<% else %>
+			<%=  yield %>
+			
+			<div class="centrar-div">
+
+
+				<div class="col-md-6 col-md-offset-3">
+
+					<%= form_for(:sessions, url: login_path) do |f| %>
+
+						<%= f.label "Email:" %>
+						<%= f.email_field "email", class: "form-control" %>
+						<%= f.label "Password:" %>
+						<%= f.password_field "password", class: "form-control" %>
+						<%= f.label "Remember me", class: 'checkbox inline'%>
+						<%= f.check_box "remember_me"%><span>Remember me</span><br>
+						<%= f.submit "Signin", class: "btn btn-primary"%>
+					<% end %>
+
+				</div>
+			</div>
+		<% end %>
+			
+</body>
 </html>
+<script type="text/javascript">
+$(document).ready(function(){
+  setTimeout(function(){
+    $('#flash').remove();
+  }, 2000);
+ })
+</script>

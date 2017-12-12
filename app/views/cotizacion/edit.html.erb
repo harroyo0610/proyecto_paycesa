@@ -1,0 +1,65 @@
+
+	<h1 class="text-center">Cotizar</h1>
+
+	<% clientes = [] %>
+	    <% if !@clientes.nil? %>
+	      <% @clientes.each { |item| clientes << [item.nombre, item.nombre]} %>
+	    <% end %>
+	<%= form_for @cotizacion do |f|%>
+		<%= f.label "# TC" %><br>	
+	  <%= f.text_field "tc", value: Cotizacion.last.tc, class: "form-control", disabled: true , id: 'tc'%>
+	  <div id="die ">
+	  <%= f.fields_for :producto, :html => {:class => ''} do |h| %>
+	    <%= h.label "Buscar producto" %><br> 
+	    <%= h.text_field "producto", class: "form-control", id: 'producton'%><br>
+	    <%= h.submit "Buscar", class: "btn btn-primary formulario" %><br>
+	  <% end %>
+	  <br>
+	  <% tc_tc = Cotizacion.last %>
+	  <% productos = Producto.where(tc: tc_tc.tc) %>
+	  <table class="table table-striped " style="background-color: #b3e6ff"" id="myTable">
+	      <thead>
+	        <tr>
+	          <th scope="col">UPC</th>
+	          <th scope="col">Nombre</th>
+	          <th scope="col">Cantidad</th>
+	          <th scope="col">Precio</th>
+	          <th scope="col">Bodega</th>
+	          <th scope="col">Delete</th>
+	        </tr>
+	      </thead>
+	      <tbody>
+	        <% if productos.empty? %>
+
+	        <% else %>
+	          <% productos.each do|item|%>
+	            <tr>
+	              <td scope="col"><%= item.upc %></td>
+	              <td scope="col"><%= item.nombre %></td>
+	              <td scope="col"><%= item.cantidad %></td>
+	              <td scope="col"><%= item.precio %></td>
+	              <td scope="col"><%= item.bodega %></td>
+	              <td scope="col"> <%= link_to "Delete", cotizacion_path(item), method: "delete", data: { confirm: "Are you sure?" }, class: "btn btn-primary" %></td>
+	            </tr>
+	          <% end %>
+	        <% end %>
+	      </tbody>
+	    </table>
+	</div>
+	  
+
+		 <br><br><br>
+<div class="offset-sm-1 col-sm-10">  
+  <%= f.label "Cliente" %><br>
+  <%= f.select("cliente", clientes, {} ,{class: "form-control"}) %><br>  
+  <%= f.label "Bodega" %><br>
+  <%= f.select("bodega", [['Ramos Millan', 'ramos'], ['Texcoco', 'texcoco'], ['Veloz', 'veloz']], {} ,{class: "form-control"}) %><br>
+  <%= f.label "Pago" %><br>
+  <%= f.select("pago", [['Contado', 'contado'], ['Crédito', 'credito']], {} ,{class: "form-control"}) %><br>
+  <%= f.label "Cantidad" %><br>
+  <%= f.text_field "cantidad", type: "text", class: "form-control" %>
+  <%= f.label "Descuento" %><br>     
+	<%= f.text_field "descuento", class: "form-control" %><br>
+  <%= link_to "Generar pdf", cotizacion_path(@cotizacion ,format: "pdf"),  target: '_blank', class: "btn btn-outline-primary offset-sm-1 col-sm-1" %>
+</div>
+<% end %>

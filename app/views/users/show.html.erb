@@ -1,0 +1,18 @@
+<% provide(:title, @user.name)%>
+
+<div>
+		<section class="user-info text-center">
+			<h3>
+				<%= image_tag "picture-profile", class: "img-circle "%>
+				Name: <%= @user.name %>
+				<br>
+				Email: <%= @user.email %>
+			</h3>			
+			<%= link_to "Edit profile", edit_user_path(current_user), class: "btn btn-default" %>
+
+		</section>
+</div>
+
+
+
+
