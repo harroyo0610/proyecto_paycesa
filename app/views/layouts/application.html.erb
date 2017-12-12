@@ -14,7 +14,6 @@
 		<% if logged_in? %>
 			<div class="row">
 			<%= render 'layouts/side_menu' %>
-			
 				
 				<div class="col-sm-10">
 					<% flash.each do |message_type, message| %>
@@ -26,24 +25,7 @@
 				</div>
 			</div>
 		<% else %>
-			<%=  yield %>
-			
-			<div class="centrar-div">
-
-
-				<div class="col-md-6 col-md-offset-3">
-
-					<%= form_for(:sessions, url: login_path) do |f| %>
-
-						<%= f.label "Email:" %>
-						<%= f.email_field "email", class: "form-control" %>
-						<%= f.label "Password:" %>
-						<%= f.password_field "password", class: "form-control" %><br>
-						<%= f.submit "Signin", class: "btn btn-primary"%>
-					<% end %>
-
-				</div>
-			</div>
+			<%= yield %>
 		<% end %>
 			
 </body>
