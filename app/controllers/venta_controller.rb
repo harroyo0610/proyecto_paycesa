@@ -24,14 +24,16 @@ class VentaController < ApplicationController
   	end
   end
   def show
-    venta = Ventum.last
+
+    @venta = Ventum.find(params[:id])
     respond_to do |format|
       format.html
       format.pdf do
-        pdf =  OrderPdf.new(venta, "Venta")
-        send_data pdf.render, filename: "venta_#{venta.tc}.pdf", type: "application/pdf", disposition: "inline"
+        pdf =  OrderPdf.new(@venta, "Venta")
+        send_data pdf.render, filename: "cotizacion_#{@venta.tc}.pdf", type: "application/pdf", disposition: "inline"
       end
     end
+
   end
 
   def update
@@ -53,7 +55,7 @@ class VentaController < ApplicationController
 	  		@venta = Ventum.last
 
 		    if @venta.update_attributes(venta_params)
-         
+         redirect_to ventum_path(@venta)
 		    	#flash[:success] = "Profile updated"
 		    	#redirect_to root_path
 		    else

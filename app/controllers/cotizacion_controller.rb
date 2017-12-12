@@ -23,16 +23,7 @@ class CotizacionController < ApplicationController
   		render 'new'
   	end
   end
-  def show
-    cotizacion = Cotizacion.last
-    respond_to do |format|
-      format.html
-      format.pdf do
-        pdf =  OrderPdf.new(cotizacion, "Cotización")
-        send_data pdf.render, filename: "cotizacion_#{cotizacion.tc}.pdf", type: "application/pdf", disposition: "inline"
-      end
-    end
-  end
+  
 
   def update
   	cotizacion = Cotizacion.last
@@ -53,15 +44,28 @@ class CotizacionController < ApplicationController
 	  		@cotizacion = Cotizacion.last
 
 		    if @cotizacion.update_attributes(cotizacion_params)
-         
+         p "si" * 100
 		    	#flash[:success] = "Profile updated"
-		    	#redirect_to root_path
+		    	redirect_to cotizacion_path(@cotizacion)
 		    else
 		      render 'new'
 		    end
 	  	else
 	  		redirect_to new_cotizacion_path
 	  	end    
+  end
+
+  def show
+
+    @cotizacion = Cotizacion.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf =  OrderPdf.new(@cotizacion, "Cotización")
+        send_data pdf.render, filename: "cotizacion_#{@cotizacion.tc}.pdf", type: "application/pdf", disposition: "inline"
+      end
+    end
+
   end
 
   def destroy

@@ -1,0 +1,9 @@
+<h1 class="text-center">Detalles de su venta</h1>
+<h3>Tc: <%= @venta.tc %></h3>
+<h3>Cliente: <%= @venta.cliente %></h3>
+<h3>Tipo pago: <%= @venta.pago %></h3>
+<h3>Fecha: <%= @venta.created_at %></h3>
+<h3>Cantidad: <%= @venta.cantidad %></h3>
+<h3>Descuento: <%= @venta.descuento %></h3>
+
+<%= link_to "Generar pdf", ventum_path(@venta ,format: "pdf"),  target: '_blank', class: "btn btn-outline-primary offset-sm-1 col-sm-1" %>

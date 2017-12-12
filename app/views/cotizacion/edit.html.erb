@@ -60,6 +60,6 @@
   <%= f.text_field "cantidad", type: "text", class: "form-control" %>
   <%= f.label "Descuento" %><br>     
 	<%= f.text_field "descuento", class: "form-control" %><br>
-  <%= link_to "Generar pdf", cotizacion_path(@cotizacion ,format: "pdf"),  target: '_blank', class: "btn btn-outline-primary offset-sm-1 col-sm-1" %>
+	<%= f.submit "Crear cotización", class: "btn btn-primary formulario" %><br>
 </div>
 <% end %>
