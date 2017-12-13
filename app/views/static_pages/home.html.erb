@@ -65,6 +65,7 @@
 				<% else %>
 					<% embarque.each_with_index do |emba, index| %>
 						<p><%= "#{index+1}.-# de guía: #{emba.numero_guia}" %></p>
+						<p><%= "Cliente: #{emba.cliente}" %></p>
 						<p><%= "Destino: #{emba.destino}" %></p>
 						<hr>
 					<% end %>
