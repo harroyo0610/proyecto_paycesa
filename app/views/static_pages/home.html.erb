@@ -1,8 +1,8 @@
 <% provide(:title, "Home")%>
-<% contado = Ventum.where(tipo: "contado") %>
-<% credito = Ventum.where(tipo: "credito") %>
-<% contado = Ventum.where(tipo: "contado") %>
-<% contado = Ventum.where(tipo: "contado") %>
+<% contado = Ventum.where(pago: "contado") %>
+<% inventario = Inventario.where("cantidad < ?", 10) %>
+<% credito = Ventum.where(pago: "credito") %>
+<% embarque = Embarque.where(status: "proceso") %>
 
 <h1 class="text-center">Bienvenido a Paycesa</h1>
 <% if logged_in? %>
@@ -10,18 +10,66 @@
 		<div class="div-dash">
 			<%= image_tag("01.png", class: "img-dash") %>
 			<h4 class="text-center contado-title">Ventas de contado</h4>
+			<div>
+				<hr>
+				<% if contado.empty? %>
+					<p>No hay ventas de contado</p>
+				<% else %>
+					<% contado.each_with_index do |venta, index| %>
+						<p><%= "#{index+1}.-TC: #{venta.tc}" %></p>
+						<p><%= "Cliente: #{venta.cliente}" %></p>
+						<hr>
+					<% end %>
+				<% end %>
+			</div>
 		</div>
 		<div class="div-dash">
 			<%= image_tag("02.png", class: "img-dash") %>
 			<h4 class="text-center inventario-title">Productos sin inventario</h4>
+			<div>
+				<hr>
+				<% if inventario.empty? %>
+					<p>No hay productos</p>
+				<% else %>
+					<% inventario.each_with_index do |item, index| %>
+						<p><%= "#{index+1}.-Cantidad: #{item.cantidad}" %></p>
+						<p><%= "Descripción: #{item.descripcion}" %></p>
+						<hr>
+					<% end %>
+				<% end %>
+			</div>
 		</div>
 		<div class="div-dash">
 			<%= image_tag("03.png", class: "img-dash") %>
 			<h4 class="text-center credito-title">Ventas a credito</h4>
+			<div>
+				<hr>
+				<% if credito.empty? %>
+					<p>No hay ventas de crédito</p>
+				<% else %>
+					<% credito.each_with_index do |venta, index| %>
+						<p><%= "#{index+1}.-TC: #{venta.tc}" %></p>
+						<p><%= "Cliente: #{venta.cliente}" %></p>
+						<hr>
+					<% end %>
+				<% end %>
+			</div>
 		</div>
 		<div class="div-dash">
 			<%= image_tag("04.png", class: "img-dash") %>
 			<h4 class="text-center proceso-title">Embarques en proceso</h4>
+			<div>
+				<hr>
+				<% if embarque.empty? %>
+					<p>No hay embarques en proceso</p>
+				<% else %>
+					<% embarque.each_with_index do |emba, index| %>
+						<p><%= "#{index+1}.-# de guía: #{emba.numero_guia}" %></p>
+						<p><%= "Destino: #{emba.destino}" %></p>
+						<hr>
+					<% end %>
+				<% end %>
+			</div>
 		</div>
 	</div>
 <% end %>
@@ -31,7 +79,7 @@
 		width: 300px;
 		height: 600px;
 		background-color: #f2f2f2;
-		margin: 25px; 
+		margin: 15px; 
 		padding: 10px;
 	}
 	.img-dash{

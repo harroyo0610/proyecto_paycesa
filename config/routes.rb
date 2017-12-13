@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'cuentas/index'
+
   get 'venta/edit'
 
   get 'user/edit'
