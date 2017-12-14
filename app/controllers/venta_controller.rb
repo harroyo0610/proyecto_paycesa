@@ -24,13 +24,20 @@ class VentaController < ApplicationController
   	end
   end
   def show
-
     @venta = Ventum.find(params[:id])
+    productos = Producto.where(tc: @venta.tc)
+    productos.each do |producto|
+      inventario = Inventario.find_by(upc: producto.upc)
+      if inventario.cantidad < @venta.cantidad
+        flash[:danger] = "La venta no tiene suficiente inventario"
+        redirect_to new_ventum_path
+      end
+    end
     respond_to do |format|
       format.html
       format.pdf do
         pdf =  OrderPdf.new(@venta, "Venta")
-        send_data pdf.render, filename: "cotizacion_#{@venta.tc}.pdf", type: "application/pdf", disposition: "inline"
+        send_data pdf.render, filename: "venta_#{@venta.tc}.pdf", type: "application/pdf", disposition: "inline"
       end
     end
 

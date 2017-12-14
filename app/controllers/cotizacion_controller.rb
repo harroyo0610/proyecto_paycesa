@@ -28,7 +28,6 @@ class CotizacionController < ApplicationController
   def update
   	cotizacion = Cotizacion.last
   	producto = params[:cotizacion][:producto][:producto]
-    producto
   	result = Producto.find_by(tc: cotizacion.tc, upc: producto)
   	inventario = Inventario.find_by(upc: producto)
 	  	if producto && result == nil && inventario
@@ -44,7 +43,6 @@ class CotizacionController < ApplicationController
 	  		@cotizacion = Cotizacion.last
 
 		    if @cotizacion.update_attributes(cotizacion_params)
-         p "si" * 100
 		    	#flash[:success] = "Profile updated"
 		    	redirect_to cotizacion_path(@cotizacion)
 		    else

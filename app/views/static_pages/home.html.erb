@@ -5,9 +5,10 @@
 <% embarque = Embarque.where(status: "proceso") %>
 
 <h1 class="text-center">Bienvenido a Paycesa</h1>
+
 <% if logged_in? %>
-	<div class="row"> 
-		<div class="div-dash">
+	<div class="row div-div"> 
+		<div class="div-dash ">
 			<%= image_tag("01.png", class: "img-dash") %>
 			<h4 class="text-center contado-title">Ventas de contado</h4>
 			<div>
@@ -23,7 +24,7 @@
 				<% end %>
 			</div>
 		</div>
-		<div class="div-dash">
+		<div class="div-dash ">
 			<%= image_tag("02.png", class: "img-dash") %>
 			<h4 class="text-center inventario-title">Productos sin inventario</h4>
 			<div>
@@ -39,7 +40,7 @@
 				<% end %>
 			</div>
 		</div>
-		<div class="div-dash">
+		<div class="div-dash ">
 			<%= image_tag("03.png", class: "img-dash") %>
 			<h4 class="text-center credito-title">Ventas a credito</h4>
 			<div>
@@ -55,7 +56,7 @@
 				<% end %>
 			</div>
 		</div>
-		<div class="div-dash">
+		<div class="div-dash ">
 			<%= image_tag("04.png", class: "img-dash") %>
 			<h4 class="text-center proceso-title">Embarques en proceso</h4>
 			<div>
@@ -67,6 +68,7 @@
 						<p><%= "#{index+1}.-# de guía: #{emba.numero_guia}" %></p>
 						<p><%= "Cliente: #{emba.cliente}" %></p>
 						<p><%= "Destino: #{emba.destino}" %></p>
+
 						<hr>
 					<% end %>
 				<% end %>
@@ -76,8 +78,9 @@
 <% end %>
 
 <style type="text/css">
+
 	.div-dash{
-		width: 300px;
+		width: 20%;
 		height: 600px;
 		background-color: #f2f2f2;
 		margin: 15px; 

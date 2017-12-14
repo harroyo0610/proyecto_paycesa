@@ -1,4 +1,6 @@
+require 'action_view'
 class OrderPdf < Prawn::Document
+	include ActionView::Helpers::NumberHelper
 	def initialize(cotizacion, tipo)
 		super(page_size: "LETTER", margin: 1)
 		font "Helvetica"
@@ -21,15 +23,16 @@ class OrderPdf < Prawn::Document
 			draw_text "#{item.nombre}", :at => [150,y]
 			draw_text "$#{item.precio}", :at => [450,y]
 			y = y + 20
-			p suma = suma + item.precio 
+			suma = suma + item.precio 
 		end
-		subtotal = (suma * @cotizacion.cantidad).round(2)
-		descuento = (((suma*@cotizacion.cantidad) / 100 ) * @cotizacion.descuento).round(2)
-		total = ((subtotal-descuento) * 1.16).round(2)
-		draw_text "$ #{subtotal}   MXN", :at => [480,200]
-		draw_text "$ #{descuento}   MXN", :at => [480,180]
-		draw_text "16%", :at => [480,160]
-		draw_text "$ #{total}   MXN", :at => [480,140]
+		subtotal =  (suma * @cotizacion.cantidad)
+		descuento =  (((suma*@cotizacion.cantidad) / 100 ) * @cotizacion.descuento)
+		total = ((subtotal-descuento) * 1.16)
+		iva = (subtotal-descuento)*0.16
+		draw_text "#{number_to_currency(subtotal, precision: 2)} MXN", :at => [460,200]
+		draw_text "#{number_to_currency(descuento, precision: 2)} MXN", :at => [460,180]
+		draw_text "#{number_to_currency(iva, precision: 2)} MXN", :at => [460,160]
+		draw_text "#{number_to_currency(total, precision: 2)} MXN", :at => [460,140]
 		draw_text "#{total.to_words.upcase} PESOS", :at => [60,160]
 		#text "Prodcutos: #{productos.each { |producto| producto.upc }} "		
 	end
