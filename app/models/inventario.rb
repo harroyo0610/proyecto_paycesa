@@ -1,7 +1,10 @@
 class Inventario < ApplicationRecord
-	validates :upc, :tipo, :bodega, :modelo, :descripcion, :compra, :venta,   presence: true
+	has_many :cotizacions_inventarios
+  	has_many :cotizacions, through: :cotizacions_inventarios
+  	has_many :venta_inventarios
+  	has_many :venta, through: :venta_inventarios
+	validates :upc, :unidad_medida, :tipo, :bodega, :modelo, :descripcion, :compra, :p_venta, :cantidad,   presence: true
 	def self.to_csv(options = {})
-			p "self" * 50
 			CSV.generate(options) do |csv|
 				csv << column_names
 				all.each do |i|

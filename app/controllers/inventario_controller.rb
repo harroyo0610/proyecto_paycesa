@@ -53,6 +53,6 @@ class InventarioController < ApplicationController
 
   private 
   	def params_inventario
-  		params.require(:inventario).permit(:upc, :tipo, :bodega, :modelo, :descripcion, :compra, :venta, :cantidad)
+  		params.require(:inventario).permit(:upc, :unidad_medida, :tipo, :bodega, :modelo, :descripcion, :compra, :p_venta, :cantidad)
   	end
 end

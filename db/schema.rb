@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171212063010) do
+ActiveRecord::Schema.define(version: 20171217050827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,13 +25,23 @@ ActiveRecord::Schema.define(version: 20171212063010) do
     t.datetime "updated_at",        null: false
   end
 
+  create_table "cotizacion_inventarios", id: false, force: :cascade do |t|
+    t.integer "cotizacion_id"
+    t.integer "inventario_id"
+    t.index ["cotizacion_id"], name: "index_cotizacion_inventarios_on_cotizacion_id", using: :btree
+    t.index ["inventario_id"], name: "index_cotizacion_inventarios_on_inventario_id", using: :btree
+  end
+
   create_table "cotizacions", force: :cascade do |t|
     t.string   "tc"
     t.string   "cliente"
     t.string   "bodega"
     t.string   "pago"
     t.integer  "cantidad"
-    t.integer  "descuento"
+    t.float    "subtotal"
+    t.float    "descuento"
+    t.float    "iva"
+    t.float    "total"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -50,26 +60,16 @@ ActiveRecord::Schema.define(version: 20171212063010) do
 
   create_table "inventarios", force: :cascade do |t|
     t.string   "upc"
+    t.string   "unidad_medida"
     t.string   "tipo"
     t.string   "bodega"
     t.string   "modelo"
     t.string   "descripcion"
     t.float    "compra"
-    t.float    "venta"
+    t.float    "p_venta"
     t.integer  "cantidad"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "productos", force: :cascade do |t|
-    t.string   "tc"
-    t.string   "upc"
-    t.string   "nombre"
-    t.integer  "cantidad"
-    t.float    "precio"
-    t.string   "bodega"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -87,9 +87,20 @@ ActiveRecord::Schema.define(version: 20171212063010) do
     t.string   "bodega"
     t.string   "pago"
     t.integer  "cantidad"
+    t.float    "subtotal"
     t.float    "descuento"
+    t.float    "iva"
+    t.float    "total"
+    t.string   "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "ventum_inventarios", force: :cascade do |t|
+    t.integer "ventum_id"
+    t.integer "inventario_id"
+    t.index ["inventario_id"], name: "index_ventum_inventarios_on_inventario_id", using: :btree
+    t.index ["ventum_id"], name: "index_ventum_inventarios_on_ventum_id", using: :btree
   end
 
 end

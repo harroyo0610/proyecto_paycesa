@@ -15,8 +15,7 @@
 	    <%= h.submit "Buscar", class: "btn btn-primary formulario" %><br>
 	  <% end %>
 	  <br>
-	  <% tc_tc = Ventum.last %>
-	  <% productos = Producto.where(tc: tc_tc.tc) %>
+	  <% productos = VentumInventario.where(ventum_id: Ventum.last.id) %>
 	  <table class="table table-striped " style="background-color: #b3e6ff"" id="myTable">
 	      <thead>
 	        <tr>
@@ -34,10 +33,11 @@
 	        <% else %>
 	          <% productos.each do|item|%>
 	            <tr>
+	            	<%item = Inventario.find(item.inventario_id)%>
 	              <td scope="col"><%= item.upc %></td>
-	              <td scope="col"><%= item.nombre %></td>
+	              <td scope="col"><%= item.descripcion %></td>
 	              <td scope="col"><%= item.cantidad %></td>
-	              <td scope="col"><%= item.precio %></td>
+	              <td scope="col"><%= item.p_venta %></td>
 	              <td scope="col"><%= item.bodega %></td>
 	              <td scope="col"> <%= link_to "Delete", ventum_path(item), method: "delete", data: { confirm: "Are you sure?" }, class: "btn btn-primary" %></td>
 	            </tr>

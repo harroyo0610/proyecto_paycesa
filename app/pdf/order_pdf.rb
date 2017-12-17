@@ -6,7 +6,7 @@ class OrderPdf < Prawn::Document
 		font "Helvetica"
 		font_size 12
 		@cotizacion = cotizacion
-		productos = Producto.where(tc: @cotizacion.tc)
+		productos = VentumInventario.where(ventum_id: @cotizacion.id)
 		 #fondo
   		image "public/images/fondo.png", :at => [0,780], :width => 600 
   		draw_text "#{tipo}", :at => [220,635], :size => 24
@@ -17,23 +17,20 @@ class OrderPdf < Prawn::Document
 		draw_text "#{@cotizacion.pago.capitalize}", :at => [100,555]
 
 		y = 440
-		suma = 0
 		productos.each do |item|
-			draw_text "#{item.upc}", :at => [50,y]
-			draw_text "#{item.nombre}", :at => [150,y]
-			draw_text "$#{item.precio}", :at => [450,y]
+			item = Inventario.find_by(id: item.inventario_id)
+			draw_text "#{item.upc}", :at => [20,y]
+			draw_text "#{@cotizacion.cantidad}", :at => [80,y]
+			draw_text "#{item.unidad_medida}", :at => [110,y]
+			draw_text "#{item.descripcion}", :at => [150,y]
+			draw_text "$#{item.p_venta}", :at => [450,y]
 			y = y + 20
-			suma = suma + item.precio 
 		end
-		subtotal =  (suma * @cotizacion.cantidad)
-		descuento =  (((suma*@cotizacion.cantidad) / 100 ) * @cotizacion.descuento)
-		total = ((subtotal-descuento) * 1.16)
-		iva = (subtotal-descuento)*0.16
-		draw_text "#{number_to_currency(subtotal, precision: 2)} MXN", :at => [460,200]
-		draw_text "#{number_to_currency(descuento, precision: 2)} MXN", :at => [460,180]
-		draw_text "#{number_to_currency(iva, precision: 2)} MXN", :at => [460,160]
-		draw_text "#{number_to_currency(total, precision: 2)} MXN", :at => [460,140]
-		draw_text "#{total.to_words.upcase} PESOS", :at => [60,160]
+		draw_text "#{number_to_currency(@cotizacion.subtotal, precision: 2)} MXN", :at => [460,200]
+		draw_text "#{number_to_currency(@cotizacion.descuento, precision: 2)} MXN", :at => [460,180]
+		draw_text "#{number_to_currency(@cotizacion.iva, precision: 2)} MXN", :at => [460,160]
+		draw_text "#{number_to_currency(@cotizacion.total, precision: 2)} MXN", :at => [460,140]
+		draw_text "#{@cotizacion.total.to_words.upcase} PESOS", :at => [60,160]
 		#text "Prodcutos: #{productos.each { |producto| producto.upc }} "		
 	end
 

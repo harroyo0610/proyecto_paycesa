@@ -6,7 +6,10 @@ class CreateCotizacions < ActiveRecord::Migration[5.0]
       t.string :bodega
       t.string :pago
       t.integer :cantidad
-      t.integer :descuento
+      t.float :subtotal
+      t.float :descuento
+      t.float :iva
+      t.float :total
 
       t.timestamps
     end

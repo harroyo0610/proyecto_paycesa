@@ -1,8 +1,20 @@
 <% provide(:title, "Home")%>
 <% contado = Ventum.where(pago: "contado") %>
-<% inventario = Inventario.where("cantidad < ?", 10) %>
+<% inventario = Inventario.where("cantidad < ?", 0) %>
 <% credito = Ventum.where(pago: "credito") %>
 <% embarque = Embarque.where(status: "proceso") %>
+<% suma_contado = 0 %>
+<% suma_credito = 0 %>
+<% contado.each do |venta| %>
+	<% if venta.created_at.strftime("%Y%m") ==  Date.today.strftime("%Y%m") && venta.total != nil %>
+		<% suma_contado = suma_contado + venta.total %>
+	<% end %>
+<% end %>
+<% credito.each do |venta| %>
+	<% if venta.created_at.strftime("%Y%m") ==  Date.today.strftime("%Y%m") %>
+		<% suma_credito = suma_credito + venta.total %>
+	<% end %>
+<% end %>
 
 <h1 class="text-center">Bienvenido a Paycesa</h1>
 
@@ -16,11 +28,7 @@
 				<% if contado.empty? %>
 					<p>No hay ventas de contado</p>
 				<% else %>
-					<% contado.each_with_index do |venta, index| %>
-						<p><%= "#{index+1}.-TC: #{venta.tc}" %></p>
-						<p><%= "Cliente: #{venta.cliente}" %></p>
-						<hr>
-					<% end %>
+					<p class="text-center"> Suma total de ventas en el mes: </p> <h3 class="text-center"><%=  "#{suma_contado}"  %></h3>
 				<% end %>
 			</div>
 		</div>
@@ -30,7 +38,7 @@
 			<div>
 				<hr>
 				<% if inventario.empty? %>
-					<p>No hay productos</p>
+					<p class="text-center">No hay productos sin inventario</p>
 				<% else %>
 					<% inventario.each_with_index do |item, index| %>
 						<p><%= "#{index+1}.-Cantidad: #{item.cantidad}" %></p>
@@ -46,13 +54,9 @@
 			<div>
 				<hr>
 				<% if credito.empty? %>
-					<p>No hay ventas de crédito</p>
+					<p class="text-center">No hay ventas de crédito</p>
 				<% else %>
-					<% credito.each_with_index do |venta, index| %>
-						<p><%= "#{index+1}.-TC: #{venta.tc}" %></p>
-						<p><%= "Cliente: #{venta.cliente}" %></p>
-						<hr>
-					<% end %>
+					<p class="text-center"> Suma total de ventas en el mes: </p> <h3 class="text-center"><%=  "#{suma_credito}"  %></h3>
 				<% end %>
 			</div>
 		</div>
@@ -62,7 +66,7 @@
 			<div>
 				<hr>
 				<% if embarque.empty? %>
-					<p>No hay embarques en proceso</p>
+					<p class="text-center">No hay embarques en proceso</p>
 				<% else %>
 					<% embarque.each_with_index do |emba, index| %>
 						<p><%= "#{index+1}.-# de guía: #{emba.numero_guia}" %></p>

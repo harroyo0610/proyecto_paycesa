@@ -25,14 +25,26 @@ class VentaController < ApplicationController
   end
   def show
     @venta = Ventum.find(params[:id])
-    productos = Producto.where(tc: @venta.tc)
+    productos = VentumInventario.where(ventum_id: @venta.id)
+    suma = 0
     productos.each do |producto|
-      inventario = Inventario.find_by(upc: producto.upc)
+      inventario = Inventario.find_by(id: producto.inventario_id)
+      suma = suma + inventario.p_venta
       if inventario.cantidad < @venta.cantidad
         flash[:danger] = "La venta no tiene suficiente inventario"
         redirect_to new_ventum_path
       end
     end
+
+    subtotal =  (suma * @venta.cantidad)
+    descuento =  (((suma*@venta.cantidad) / 100 ) * @venta.descuento)
+    total = ((subtotal-descuento) * 1.16)
+    iva = (subtotal-descuento)*0.16
+
+    if @venta.subtotal ==nil
+      @venta.update_attributes(subtotal: subtotal, descuento: descuento, iva: iva, total: total, status: "completada")
+    end
+    
     respond_to do |format|
       format.html
       format.pdf do
@@ -44,14 +56,16 @@ class VentaController < ApplicationController
   end
 
   def update
-  	venta = Ventum.last
+    venta = Ventum.last
   	producto = params[:ventum][:producto][:producto]
-    
-  	result = Producto.find_by(tc: venta.tc, upc: producto)
-  	inventario = Inventario.find_by(upc: producto)
-	  	if producto && result == nil && inventario
-	  		
-	  		producton = Producto.new(tc: venta.tc, upc: producto, nombre: inventario.descripcion, cantidad: inventario.cantidad, precio: inventario.venta, bodega: inventario.bodega)
+    inventario = Inventario.find_by(upc: producto)
+    if inventario == nil && producto != ""
+      flash[:danger] = "Producto con el upc que busco no existe"
+      return redirect_to new_ventum_path
+    end
+    result = VentumInventario.find_by(ventum_id: venta.id, inventario_id: inventario.id) if producto != ""
+	  	if producto && inventario && result == nil
+	  		producton = VentumInventario.new(ventum_id: venta.id, inventario_id: inventario.id)
 	  		if producton.save
 	  			redirect_to new_ventum_path
 	  		else
@@ -60,11 +74,8 @@ class VentaController < ApplicationController
 	  		product =  params.require(:ventum).require(:producto).permit(:producto)
 	  	elsif producto == ""
 	  		@venta = Ventum.last
-
 		    if @venta.update_attributes(venta_params)
          redirect_to ventum_path(@venta)
-		    	#flash[:success] = "Profile updated"
-		    	#redirect_to root_path
 		    else
 		      render 'new'
 		    end
@@ -74,12 +85,12 @@ class VentaController < ApplicationController
   end
 
   def destroy
-    Producto.find(params[:id]).destroy
+    VentumInventario.find_by(ventum_id: Ventum.last.id, inventario_id: params[:id]).destroy
     redirect_to new_ventum_path
   end
 
   private
   	def venta_params
-  		params.require(:ventum).permit(:tc, :cliente, :bodega, :pago, :cantidad, :descuento)
+  		params.require(:ventum).permit(:tc, :cliente, :bodega, :pago, :cantidad, :subtotal, :descuento, :iva, :total, :status)
   	end
 end

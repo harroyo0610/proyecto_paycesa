@@ -8,12 +8,14 @@
     <%= f.text_field "modelo", type: "text", class: "form-control" %>
     <%= f.label "UPC" %><br>	
     <%= f.text_field "upc", type: "text", class: "form-control" %>
+    <%= f.label "Unidad de Medida" %><br>  
+    <%= f.text_field "unidad_medida", class: "form-control" %>
     <%= f.label "Descripcion" %><br>
     <%= f.text_field "descripcion", type: "text", class: "form-control" %>
     <%= f.label "Compra" %><br>
     <%= f.text_field "compra", type: "text", class: "form-control" %>
     <%= f.label "Venta" %><br>	
-    <%= f.text_field "venta", type: "text", class: "form-control" %>
+    <%= f.text_field "p_venta", class: "form-control" %>
     <%= f.label "Cantidad" %><br>	
     <%= f.number_field "cantidad",  class: "form-control" %>	<br>	
     <%= f.submit "Crear", class: "btn btn-primary" %>

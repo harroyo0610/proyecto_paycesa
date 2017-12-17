@@ -29,8 +29,8 @@
 						<td scope="col"><%= item.modelo %></td>
 						<td scope="col"><%= item.descripcion %></td>
 						<td scope="col"><%= item.compra %></td>
-						<td scope="col"><%= item.venta %></td>
-						<td scope="col"><%= item.cantidad %></td>
+						<td scope="col"><%= item.p_venta %></td>
+						<td scope="col"><%= if item.cantidad > 0 then item.cantidad else "SIN EXISTENCIA" end %></td>
 						<td scope="col"><%= item.bodega %></td>
 					</tr>
 				<% end %>
