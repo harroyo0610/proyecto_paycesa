@@ -25,9 +25,10 @@ ActiveRecord::Schema.define(version: 20171217050827) do
     t.datetime "updated_at",        null: false
   end
 
-  create_table "cotizacion_inventarios", id: false, force: :cascade do |t|
+  create_table "cotizacion_inventarios", force: :cascade do |t|
     t.integer "cotizacion_id"
     t.integer "inventario_id"
+    t.integer "c_productos"
     t.index ["cotizacion_id"], name: "index_cotizacion_inventarios_on_cotizacion_id", using: :btree
     t.index ["inventario_id"], name: "index_cotizacion_inventarios_on_inventario_id", using: :btree
   end
@@ -42,6 +43,7 @@ ActiveRecord::Schema.define(version: 20171217050827) do
     t.float    "descuento"
     t.float    "iva"
     t.float    "total"
+    t.string   "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -99,6 +101,7 @@ ActiveRecord::Schema.define(version: 20171217050827) do
   create_table "ventum_inventarios", force: :cascade do |t|
     t.integer "ventum_id"
     t.integer "inventario_id"
+    t.integer "c_productos"
     t.index ["inventario_id"], name: "index_ventum_inventarios_on_inventario_id", using: :btree
     t.index ["ventum_id"], name: "index_ventum_inventarios_on_ventum_id", using: :btree
   end

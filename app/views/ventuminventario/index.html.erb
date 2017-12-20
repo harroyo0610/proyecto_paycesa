@@ -1,10 +1,10 @@
-<h1 class="text-center">Llena los detalles de la Cotización</h1>
+<h1 class="text-center">Llena los detalles de la venta</h1>
 
 	<% clientes = [] %>
 	      <% Cliente.all.each { |item| clientes << [item.nombre, item.nombre]} %>
-<%= form_for Cotizacion.last do |f|%>
+<%= form_for Ventum.last do |f|%>
 		<%= f.label "# TC" %><br>	
-	  <%= f.text_field "tc", value: Cotizacion.last.tc, class: "form-control", disabled: true , id: 'tc'%>
+	  <%= f.text_field "tc", value: Ventum.last.tc, class: "form-control", disabled: true , id: 'tc'%>
 
 		 <br><br><br>
 <div class="offset-sm-1 col-sm-10">  
@@ -18,4 +18,6 @@
 	<%= f.text_field "descuento", class: "form-control" %><br>
 <%= f.submit "Aceptar", class: "btn btn-primary formulario" %><br></div>
 <% end %>
-<%= link_to "Generar pdf", cotizacion_path(Cotizacion.last ,format: "pdf"),  target: '_blank', class: "btn btn-outline-primary offset-sm-1 col-sm-1" %>
+<% if Ventum.last.status != nil%>
+	<%= link_to "Generar pdf", ventum_path(Ventum.last ,format: "pdf"),  target: '_blank', class: "btn btn-outline-primary offset-sm-1 col-sm-1" %>
+<% end %>

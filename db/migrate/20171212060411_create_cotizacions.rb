@@ -10,6 +10,7 @@ class CreateCotizacions < ActiveRecord::Migration[5.0]
       t.float :descuento
       t.float :iva
       t.float :total
+      t.string :status
 
       t.timestamps
     end

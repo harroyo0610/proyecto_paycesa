@@ -33,6 +33,8 @@ Rails.application.routes.draw do
   resources :embarque
   resources :cotizacion
   resources :venta
+  resources :ventuminventario
+  resources :cotizacioninventario
     get 'sessions/new'
   root                  'static_pages#home'
   get     'about'   =>  'static_pages#about'

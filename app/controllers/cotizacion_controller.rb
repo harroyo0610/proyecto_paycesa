@@ -12,67 +12,56 @@ class CotizacionController < ApplicationController
   	render 'edit'
   end
 
-  def create
-  	@cotizacion = Cotizacion.new(cotizacion_params)
-
-  	if @cotizacion.save
-  		#flash[:success] = "Welcome to my app"
-      #log_in(@)
-  		redirect_to new_cotizacion_path
-  	else
-  		render 'new'
-  	end
-  end
-  
-
-  def update
-  	cotizacion = Cotizacion.last
-  	producto = params[:cotizacion][:producto][:producto]
-  	result = Producto.find_by(tc: cotizacion.tc, upc: producto)
-  	inventario = Inventario.find_by(upc: producto)
-	  	if producto && result == nil && inventario
-	  		
-	  		producton = Producto.new(tc: cotizacion.tc, upc: producto, nombre: inventario.descripcion, cantidad: inventario.cantidad, precio: inventario.venta, bodega: inventario.bodega)
-	  		if producton.save
-	  			redirect_to new_cotizacion_path
-	  		else
-		  		render 'new'
-		  	end
-	  		product =  params.require(:cotizacion).require(:producto).permit(:producto)
-	  	elsif producto == ""
-	  		@cotizacion = Cotizacion.last
-
-		    if @cotizacion.update_attributes(cotizacion_params)
-		    	#flash[:success] = "Profile updated"
-		    	redirect_to cotizacion_path(@cotizacion)
-		    else
-		      render 'new'
-		    end
-	  	else
-	  		redirect_to new_cotizacion_path
-	  	end    
+  def index
+    @cotizacion = Cotizacion.last
+    @movs = CotizacionInventario.where(cotizacion_id: @cotizacion.id) 
   end
 
   def show
-
-    @cotizacion = Cotizacion.find(params[:id])
+    @cotizacion = Cotizacion.last
+    productos = []
+    @movs = CotizacionInventario.where(cotizacion_id: @cotizacion.id) 
+    @movs.each do |mov|
+        productos << inventario = Inventario.find(mov.inventario_id)
+    end
     respond_to do |format|
       format.html
       format.pdf do
-        pdf =  OrderPdf.new(@cotizacion, "Cotización")
+        pdf =  OrderPdf.new(@cotizacion, @movs, productos, "Cotizacion")
         send_data pdf.render, filename: "cotizacion_#{@cotizacion.tc}.pdf", type: "application/pdf", disposition: "inline"
       end
     end
 
   end
 
+  def update
+    cotizacion = Cotizacion.find(params[:id])
+    productos = CotizacionInventario.where(cotizacion_id: cotizacion.id)
+    suma = 0
+    productos.each do |producto|
+      inventario = Inventario.find_by(id: producto.inventario_id)
+      suma = suma + (inventario.p_venta * producto.c_productos)
+    end
+    subtotal =  suma
+    descuento =  ((subtotal / 100 ) * params[:cotizacion][:descuento].to_f)
+    total = ((subtotal-descuento) * 1.16)
+    iva = (subtotal-descuento)*0.16
+
+    if cotizacion.subtotal == nil 
+      cotizacion.update_attributes(cliente: params[:cotizacion][:cliente], bodega: params[:cotizacion][:bodega], pago: params[:cotizacion][:pago], subtotal: subtotal, descuento: descuento, iva: iva, total: total, status: "completada")
+      redirect_to cotizacion_path(Cotizacion.last)
+    else
+      redirect_to cotizacioninventario_index_path
+    end
+  end
+
   def destroy
-    Producto.find(params[:id]).destroy
+    CotizacionInventario.find_by(cotizacion_id: cotizacion.last.id, inventario_id: params[:id]).destroy
     redirect_to new_cotizacion_path
   end
 
   private
-  	def cotizacion_params
-  		params.require(:cotizacion).permit(:tc, :cliente, :bodega, :pago, :cantidad, :descuento)
-  	end
+    def cotizacion_params
+      params.require(:cotizacion).permit(:tc, :cliente, :bodega, :pago, :subtotal, :descuento, :iva, :total, :status)
+    end
 end

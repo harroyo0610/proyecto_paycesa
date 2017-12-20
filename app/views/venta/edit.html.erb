@@ -1,64 +1,88 @@
-
-	<h1 class="text-center">Venta</h1>
-
-	<% clientes = [] %>
-	    <% if !@clientes.nil? %>
-	      <% @clientes.each { |item| clientes << [item.nombre, item.nombre]} %>
-	    <% end %>
-	<%= form_for @venta do |f|%>
-		<%= f.label "# TC" %><br>	
-	  <%= f.text_field "tc", value: Ventum.last.tc, class: "form-control", disabled: true , id: 'tc'%>
-	  <div id="die ">
-	  <%= f.fields_for :producto, :html => {:class => ''} do |h| %>
-	    <%= h.label "Buscar producto" %><br> 
-	    <%= h.text_field "producto", class: "form-control", id: 'producton'%><br>
-	    <%= h.submit "Buscar", class: "btn btn-primary formulario" %><br>
-	  <% end %>
-	  <br>
-	  <% productos = VentumInventario.where(ventum_id: Ventum.last.id) %>
-	  <table class="table table-striped " style="background-color: #b3e6ff"" id="myTable">
-	      <thead>
-	        <tr>
-	          <th scope="col">UPC</th>
-	          <th scope="col">Nombre</th>
-	          <th scope="col">Cantidad</th>
-	          <th scope="col">Precio</th>
-	          <th scope="col">Bodega</th>
-	          <th scope="col">Delete</th>
-	        </tr>
-	      </thead>
-	      <tbody>
-	        <% if productos.empty? %>
-
-	        <% else %>
-	          <% productos.each do|item|%>
-	            <tr>
-	            	<%item = Inventario.find(item.inventario_id)%>
-	              <td scope="col"><%= item.upc %></td>
-	              <td scope="col"><%= item.descripcion %></td>
-	              <td scope="col"><%= item.cantidad %></td>
-	              <td scope="col"><%= item.p_venta %></td>
-	              <td scope="col"><%= item.bodega %></td>
-	              <td scope="col"> <%= link_to "Delete", ventum_path(item), method: "delete", data: { confirm: "Are you sure?" }, class: "btn btn-primary" %></td>
-	            </tr>
-	          <% end %>
-	        <% end %>
-	      </tbody>
-	    </table>
+<h1 class="text-center">Venta</h1>
+<br><br>
+<div class="row">
+	<h4>#TC:<%="#{Ventum.last.tc}"%></h4>
 	</div>
-	  
+	<hr>
+<div class="row col-sm-12">
 
-		 <br><br><br>
-<div class="offset-sm-1 col-sm-10">  
-  <%= f.label "Cliente" %><br>
-  <%= f.select("cliente", clientes, {} ,{class: "form-control"}) %><br>  
-  <%= f.label "Bodega" %><br>
-  <%= f.select("bodega", [['Ramos Millan', 'ramos'], ['Texcoco', 'texcoco'], ['Veloz', 'veloz']], {} ,{class: "form-control"}) %><br>
-  <%= f.label "Pago" %><br>
-  <%= f.select("pago", [['Contado', 'contado'], ['Crédito', 'credito']], {} ,{class: "form-control"}) %><br>
-  <%= f.label "Cantidad" %><br>
-  <%= f.text_field "cantidad", type: "text", class: "form-control" %>
-  <%= f.label "Descuento" %><br>     
-	<%= f.text_field "descuento", class: "form-control" %><br>
-<%= f.submit "Crear venta", class: "btn btn-primary formulario" %><br></div>
-<% end %>
+
+	<table class="table table-striped " style="background-color: #b3e6ff" id="myTable">
+		<input type="text" class="form-control col-sm-4" id="myInput" onkeyup="myFunction()" placeholder="Buscar.." title="Type in a name">
+
+		<thead>
+			<tr>
+				<th scope="col">UPC</th>
+	      <th scope="col">Modelo</th>
+	      <th scope="col">Descripción</th>
+	      <th scope="col">Compra</th>
+	      <th scope="col">Venta</th>
+	      <th scope="col">Cantidad Existencia</th>
+	      <th scope="col">Bodega</th>
+	      <th scope="col">Agregar al carrito</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+			<% if Inventario.all.empty? %>
+				<h3 class="text-center">No hay inventario</h3>
+			<% else %>
+				<% Inventario.all.each do|item|%>
+					<tr>
+						<td scope="col"><%= item.upc %></td>
+						<td scope="col"><%= item.modelo %></td>
+						<td scope="col"><%= item.descripcion %></td>
+						<td scope="col"><%= item.compra %></td>
+						<td scope="col"><%= item.p_venta %></td>
+						<td scope="col"><%= if item.cantidad > 0 then item.cantidad else "SIN EXISTENCIA" end %></td>
+						<td scope="col"><%= item.bodega %></td>
+						<td scope="col"><%= link_to "Elige este producto", ventuminventario_path(item), class: "btn btn-primary" %></td>
+					</tr>
+				<% end %>
+			<% end %>
+		</tbody>
+	</table>
+	<%= link_to "Ir al los detalles de la venta", venta_path, class: "btn btn-primary" %>
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+	function myFunction() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

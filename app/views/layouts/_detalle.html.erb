@@ -1,0 +1,36 @@
+<div class="col-sm-12">
+	<div class="row titulo">
+		<div class="col-sm-1"><h5 class="text-center">UPC</h5></div>
+		<div class="col-sm-2"><h5 class="text-center">Descripción</h5></div>
+		<div class="col-sm-1"><h5 class="text-center">Compra</h5></div>
+		<div class="col-sm-2"><h5 class="text-center">Precio venta</h5></div>
+		<div class="col-sm-1"><h5 class="text-center">Cantidad</h5></div>
+		<div class="col-sm-1"><h5 class="text-center">Cantidad Producto</h5></div>
+		<div class="offset-sm-1 col-sm-2"><h5 class="text-center">Borrar</h5></div>
+	</div>
+	<%= form_tag('/ventuminventario', method: :create) do %>
+	<% @movs.each_with_index do |item, index|%>
+		<% item =  Inventario.find_by(id: item.inventario_id) %>
+			<hr>
+			<div class="row">
+			<div class="col-sm-1 text-center"><%= item.upc %></div>
+			<div class="col-sm-2 text-center"><%= item.descripcion %></div>
+			<div class="col-sm-1 text-center"><%= item.compra %></div>
+			<div class="col-sm-2 text-center"><%= item.p_venta %></div>
+			<div class="col-sm-1 text-center"><%= if item.cantidad > 0 then item.cantidad else "SIN EXISTENCIA" end %></div>
+			<div class="col-sm-1 text-center"><%= number_field_tag "c_producto#{index.to_s }id#{item.id}", min: 0, class: "form-control cantidad" %></div>
+			<div class="offset-sm-1 col-sm-2 text-center"><%= link_to "Delete", ventuminventario_path(item), method: "delete", data: { confirm: "Are you sure?" }, class: "btn btn-primary" %></div>
+					
+		</div>	
+
+	<% end %>
+	<%= submit_tag "Agregar", class: "btn btn-primary" %>
+	<% end %>
+
+</div>
+
+<style type="text/css">
+	.cantidad{
+		width: 50px;
+	}
+</style>
