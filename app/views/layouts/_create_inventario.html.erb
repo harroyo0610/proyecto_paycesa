@@ -17,7 +17,7 @@
     <%= f.label "Venta" %><br>	
     <%= f.text_field "p_venta", class: "form-control" %>
     <%= f.label "Cantidad" %><br>	
-    <%= f.number_field "cantidad",  class: "form-control" %>	<br>	
+    <%= f.number_field "cantidad",  class: "form-control", step: :any %>	<br>	
     <%= f.submit "Crear", class: "btn btn-primary" %>
   <% end %>
 </div>
